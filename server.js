@@ -60,6 +60,39 @@ app.get('/hello', (req, res) => {
     res.send(`Hello there, ${req.query.name}! I hear you are ${req.query.age} years old!`);
 });
 
+// Data array of shoes
+const shoes = [
+    { name: "Birkenstocks", price: 50, type: "sandal" },
+    { name: "Air Jordans", price: 500, type: "sneaker" },
+    { name: "Air Mahomeses", price: 501, type: "sneaker" },
+    { name: "Utility Boots", price: 20, type: "boot" },
+    { name: "Velcro Sandals", price: 15, type: "sandal" },
+    { name: "Jet Boots", price: 1000, type: "boot" },
+    { name: "Fifty-Inch Heels", price: 175, type: "heel" }
+];
+
+// Define a route for /shoes
+app.get('/shoes', (req, res) => {
+    const { minPrice, maxPrice, type } = req.query;
+
+    // Filter shoes based on query parameters
+    let filteredShoes = shoes;
+
+    if (minPrice) {
+        filteredShoes = filteredShoes.filter(shoe => shoe.price >= parseInt(minPrice, 10));
+    }
+
+    if (maxPrice) {
+        filteredShoes = filteredShoes.filter(shoe => shoe.price <= parseInt(maxPrice, 10));
+    }
+
+    if (type) {
+        filteredShoes = filteredShoes.filter(shoe => shoe.type === type);
+    }
+
+    res.json(filteredShoes);
+});
+
 // Start the server
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
